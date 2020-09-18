@@ -66,3 +66,67 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+## 创建项目及启动
+
+```
+npx create-react-app demo-name
+cd demo-name
+yarn start
+```
+
+## 使用第三方插件
+
+```
+yarn add antd
+```
+
+## 配置按需加载
+
+1. yarn add react-app-rewired customize-cra babel-plugin-import
+2. 根目录创建 config-overrides.js
+
+```
+const {override, fixBabelImports} = require('customize-cra');
+module.exports = override(
+    fixBabelImports("import", {
+        libraryName:"antd",
+        libraryDirectory:"es",
+        style:"css"
+    })
+)
+```
+
+3. 修改 package.json
+
+```
+"scripts":{
+    "start":"react-app-rewired start",
+    "build":"react-app-rewired build",
+    "test":"react-app-rewired test",
+    "eject":"react-app-rewired eject"
+}
+```
+
+## 自定义主题
+
+> 借助 less 变量覆盖功能(yarn add less less-loader)，引入 customize-cra 中提供的 addLessLoader 帮助加载 less 样式，同时修改 config-overrides.js 文件
+
+```
+const { override, fixBabelImports, addLessLoader } = require("customize-cra");
+module.exports = override(
+  fixBabelImports("import", {
+    libraryName: "antd",
+    libraryDirectory: "es",
+    style: true,
+  }),
+  <!-- 将addLessLoader的配置选项现在将嵌套在一个lessOptions对象中 -->
+  addLessLoader({
+    lessOptions: {
+      javascriptEnabled: true,
+      modifyVars: { "@primary-color": "pink" },
+    },
+  })
+);
+
+```
