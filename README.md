@@ -130,3 +130,20 @@ module.exports = override(
 );
 
 ```
+
+## 装饰器
+
+```
+yarn add @babel/plugin-proposal-decorators
+```
+
+> 更新 config-overrides.js 文件
+
+```
+const {addDecoratorsLegacy} = require("customize-cra")
+
+module.exports=override(
+  ...,
+  addDecoratorsLegacy() // 配置装饰器
+  )
+```
