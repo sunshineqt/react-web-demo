@@ -147,3 +147,29 @@ module.exports=override(
   addDecoratorsLegacy() // 配置装饰器
   )
 ```
+
+## redux
+
+```
+yarn add redux
+```
+
+## 应用中间件实现异步及日志记录等 redux-thunk redux-logger
+
+```
+yarn add redux-thunk redux-logger
+```
+
+## react-redux
+
+> Provider 为后代组件提供 store；connect 为组件提供数据和变更方法
+
+```
+yarn add react-redux
+```
+
+## react-router
+
+```
+yarn add react-router-dom
+```
