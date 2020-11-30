@@ -154,10 +154,50 @@ module.exports=override(
 yarn add redux
 ```
 
-## 应用中间件实现异步及日志记录等 redux-thunk redux-logger
+### redux 使用
 
 ```
-yarn add redux-thunk redux-logger
+// src/store/index.js
+import {createStore} from 'redux';
+const counterReducer = (state=0,action) => {
+    switch(action.type) {
+        case 'add':
+            return state + 1;
+        case 'minus':
+            return state - 1;
+        default:
+            return state;
+    }
+}
+const store = createStore(counterReducer)
+export default store;
+
+// ReduxPage.js
+import React, { Component } from 'react'
+import store from '../store';
+
+export default class ReduxPage extends Component{
+    render(){
+        return (
+            <div>
+                <p>{store.getState()}</p>
+                <div>
+                    <button onClick={() =>store.dispatch({type:'add'})}>+</button>
+                    <button onClick={() =>store.dispatch({type:'minus'})}>-</button>
+                </div>
+            </div>
+        )
+    }
+}
+// index.js 订阅状态变更
+import store from './store';
+const render = () => {
+    ReactDOM.render(
+        <App />,document.querySelector('#root')
+    )
+}
+render()
+store.subscribe(render)
 ```
 
 ## react-redux
@@ -166,6 +206,93 @@ yarn add redux-thunk redux-logger
 
 ```
 yarn add react-redux
+```
+
+### react-redux 使用
+
+```
+// 全局提供store，index.js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import store from './store'
+
+import {Provider} from 'react-redux';
+ReactDOM.render(
+    <Provider store={store}>
+        <App />,document.querySelector('#root')
+    </Provider>
+)
+
+// ReduxTest.js
+import {connect} from 'react-redux';
+@connect(
+    state => ({num:state}),
+    {
+        add:()=>({type:'add'}),
+        minus:()=>({type:'minus'}),
+    }
+)
+class ReduxTest extends Component{
+    render(){
+        return (
+            <div>
+                <p>{this.props.num}</p>
+                <div>
+                    <button onClick={this.props.add}>+</button>
+                    <button onClick={this.props.minus}>-</button>
+                </div>
+            </div>
+        )
+    }
+}
+```
+
+## 应用中间件实现异步及日志记录等 redux-thunk redux-logger
+
+## react-redux
+
+```
+yarn add redux-thunk redux-logger
+```
+
+## react-redux 使用
+
+```
+// store.js
+import {createStore, applyMiddleware} from 'redux';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
+const store=createStore(fruitReducer,applyMiddleware(logger,thunk));
+
+// ReduxTest.js
+@connect(
+    state => ({num:state}),
+    {
+        asyncAdd:() => dispatch => {
+            setTimeout(()=>{
+                dispatch({type:'add'})
+            },1000)
+        }
+    }
+)
+```
+
+## 代码抽离 抽离 reducer 和 action
+
+> store/counterReducer.js
+
+```
+export const counterReducer = (state, action) => {};
+```
+
+> action/index.js
+
+```
+export const add = num => ({type:'add', payload:num})
+export const minus = num => ({type:'minus', payload:num})
+
+export const asyncAdd = num => dispatch => {}
 ```
 
 ## react-router

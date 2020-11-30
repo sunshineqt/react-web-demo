@@ -1,8 +1,8 @@
-export function countReducer(state = 0, action) {
+export function counterReducer(state = 0, action) {
   switch (action.type) {
-    case "ADD":
+    case "add":
       return state + 1;
-    case "MINUS":
+    case "minus":
       return state - 1;
     default:
       return state;
