@@ -250,13 +250,13 @@ class ReduxTest extends Component{
 
 ## 应用中间件实现异步及日志记录等 redux-thunk redux-logger
 
-## react-redux
+## redux-thunk
 
 ```
 yarn add redux-thunk redux-logger
 ```
 
-## react-redux 使用
+## redux-thunk 使用
 
 ```
 // store.js
@@ -293,6 +293,23 @@ export const add = num => ({type:'add', payload:num})
 export const minus = num => ({type:'minus', payload:num})
 
 export const asyncAdd = num => dispatch => {}
+```
+
+## 模块化
+
+```
+// store/index.js
+import {combineReducers} from 'redux';
+const store = createStore(
+  combineReducers({counter:counterReducer}),
+  applyMiddleware(logger,thunk)
+)
+
+//ReduxTest.js
+@connect(
+  state => ({num:state.conter}),
+  {add,minus,asyncAdd}
+)
 ```
 
 ## react-router
